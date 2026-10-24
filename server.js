@@ -16,9 +16,15 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Enable CORS for frontend requests (Vite runs on port 5173 by default)
+const clientOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.includes(',')
+    ? process.env.CLIENT_URL.split(',').map((url) => url.trim())
+    : process.env.CLIENT_URL
+  : '*';
+
 app.use(
   cors({
-    origin: '*', // Allows requests from any origin in development
+    origin: clientOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
